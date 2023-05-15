@@ -1,5 +1,6 @@
  # Diccionario
 instrucciones = {
+    #Type r
     "add": ("100000", "00000", "", "", "", "000000"),
     "sub": ("100010", "00000", "", "", "", "000000"),
     "slt": ("101010", "00000", "", "", "", "000000"),
@@ -8,6 +9,7 @@ instrucciones = {
     "beq": ("000100", "", "", "", "", ""),
     "sw": ("101011", "", "", "", "", ""),
     "lw": ("100011", "", "", "", "", ""),
+    #Type J
     "j": ("000010", "", "", "", "", "")
 }
 
@@ -31,15 +33,14 @@ for linea in arch:
         
         if instruction == "addi" or instruction == "beq" or instruction == "lw" or instruction == "sw":
             codigo += instrucciones[instruction][0]
-            #codigo += bin(int(campos[3][1:].replace("$", "")))[2:].zfill(5)  # rd
             codigo += bin(int(campos[2][1:].replace("$", "")))[2:].zfill(5)  # rt
             codigo += bin(int(campos[1][1:].replace("$", "")))[2:].zfill(5)  # rs
             codigo += bin(int(campos[3].replace("#", "")))[2:].rjust(16, "0")  # inmediato
         if instruction == "j":
-            # Si es una instrucción tipo J se convierte el valor inmediato a binario y se quitan los dos primeros caracteres
             codigo += instrucciones[instruction][0]
-            codigo += bin(int(campos[1]))[2:].zfill(26)
-        
+            number = int(campos[1][1:])  # Extract the numeric part of the instruction, excluding the '#'
+            codigo += bin(number)[2:].zfill(26)  # Convert the number to binary and pad it to 26 bits
+
         codigo += instrucciones[instruction][2]
         codigo += instrucciones[instruction][3]
         codigo += instrucciones[instruction][4]
