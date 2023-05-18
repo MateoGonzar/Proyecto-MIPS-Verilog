@@ -1,8 +1,3 @@
-.data                   # declaración de strings para el output
-part1: .asciiz "\nMover disco "
-part2: .asciiz " de la vara "
-part3: .asciiz " a la vara "
-
 .text
 .globl main
 main:
@@ -13,9 +8,6 @@ main:
     addi $a3, $zero, 'C'
 
     j hanoi           # salto o llamada a hanoi
-
-    li $v0, 10          # exit syscall (termina el programa)
-    syscall
 
 hanoi:                  # subrutina hanoi
 
@@ -31,7 +23,8 @@ hanoi:                  # subrutina hanoi
     add $s2, $a2, $zero
     add $s3, $a3, $zero # se asignan los parametros de a0-a3 a los registros s0-s3
     addi $t7, $zero, 1  # t7 = 1
-    beq $s0, $t7, output # si solo hay un disco (s0 == 1) se salta a output (branch if equal)
+    addi $t1, $zero, 1   
+    beq $s0, $t1, exithanoi # si solo hay un disco (s0 == 1) se salta a exithanoi
 
     recur1:       # disco más largo no está en la primera vara (n-1, origen, auxiliar, destino)
         
@@ -44,7 +37,7 @@ hanoi:                  # subrutina hanoi
         j output           # salto directo a output
 
     recur2:       # disco más largo sí está en la primera vara (n-1, destino, origen, auxiliar)
-
+    
         sub $a0, $s0, $t7
         add $a1, $s3, $zero
         add $a2, $s2, $zero
@@ -63,25 +56,5 @@ hanoi:                  # subrutina hanoi
         
         jr $ra  # inmediatamente regresa a la dirección de retorno (ra) para dar por terminada la subrutina
     output:
-        lw  $ra, 0($sp)        # restaurar registros del stack
-        li $v0,  4              # print string syscall
-        la $a0,  part1          # carga el string part1 a a0 para imprimirlo
-        syscall
-        li $v0,  1              # print integer syscall
-        add $a0, $s0, $zero     # copia el valor de s0 a a0 para imprimirlo
-        syscall
-        li $v0,  4              # print string syscall
-        la $a0,  part2          # carga el string part2 a a0 para imprimirlo
-        syscall
-        li $v0,  11             # print character syscall
-        add $a0, $s1, $zero     # copia el valor de s1 a a0 para imprimirlo
-        syscall
-        li $v0,  4              # print string syscall
-        la $a0,  part3          # carga el string part3 a a0 para imprimirlo
-        syscall
-        li $v0,  11             # print character syscall
-        add $a0, $s2, $zero     # copia el valor de s2 a a0 para imprimirlo
-        syscall
-
-        beq $s0, $t7, exithanoi # si solo hay un disco (s0 == 1) se salta a exithanoi
+        beq $s0, $t1, exithanoi # si solo hay un disco (s0 == 1) se salta a exithanoi
         j recur2                # de lo contrario, salto directo a recur2
