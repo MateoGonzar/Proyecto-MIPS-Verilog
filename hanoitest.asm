@@ -30,13 +30,13 @@ hanoi:                  # subrutina hanoi
     add $s1, $a1, $zero
     add $s2, $a2, $zero
     add $s3, $a3, $zero # se asignan los parametros de a0-a3 a los registros s0-s3
-
-    addi $t1, $zero, 1  
+    addi $t7, $zero, 1  # t7 = 1
+    addi $t1, $zero, 1   
     beq $s0, $t1, output # si solo hay un disco (s0 == 1) se salta a output (branch if equal)
 
     recur1:       # disco más largo no está en la primera vara (n-1, origen, auxiliar, destino)
-
-        addi $a0, $s0, -1   # disminuir el valor de s0 en 1 y asignarlo a a0
+        
+        sub $a0, $s0, $t7   # disminuir el valor de s0 en 1 y asignarlo a a0
         add $a1, $s1, $zero
         add $a2, $s3, $zero
         add $a3, $s2, $zero # copia de parametros para la llamada recursiva
@@ -45,8 +45,8 @@ hanoi:                  # subrutina hanoi
         j output           # salto directo a output
 
     recur2:       # disco más largo sí está en la primera vara (n-1, destino, origen, auxiliar)
-
-        addi $a0, $s0, -1
+    
+        sub $a0, $s0, $t7
         add $a1, $s3, $zero
         add $a2, $s2, $zero
         add $a3, $s1, $zero
@@ -64,7 +64,7 @@ hanoi:                  # subrutina hanoi
         
         jr $ra  # inmediatamente regresa a la dirección de retorno (ra) para dar por terminada la subrutina
     output:
-
+        lw  $ra, 0($sp)        # restaurar registros del stack
         li $v0,  4              # print string syscall
         la $a0,  part1          # carga el string part1 a a0 para imprimirlo
         syscall
