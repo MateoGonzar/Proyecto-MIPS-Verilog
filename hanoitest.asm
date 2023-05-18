@@ -30,7 +30,8 @@ hanoi:                  # subrutina hanoi
     add $s1, $a1, $zero
     add $s2, $a2, $zero
     add $s3, $a3, $zero # se asignan los parametros de a0-a3 a los registros s0-s3
-    addi $t7, $zero, 1  # t7 = 1
+    addi $t1, $zero, 1  # t1 = 1
+    slt $t7, $zero, $t1   
     beq $s0, $t7, output # si solo hay un disco (s0 == 1) se salta a output (branch if equal)
 
     recur1:       # disco más largo no está en la primera vara (n-1, origen, auxiliar, destino)
