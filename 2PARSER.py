@@ -1,16 +1,20 @@
  # Diccionario
 instrucciones = {
     #Type r
-    "add": ("100000", "00000", "", "", "", "000000"),
-    "sub": ("100010", "00000", "", "", "", "000000"),
-    "slt": ("101010", "00000", "", "", "", "000000"),
+    "add": ("000000", "00000", "", "", "", "000000"),
+    "sub": ("000000", "00000", "", "", "", "000000"),
+    "slt": ("000000", "00000", "", "", "", "000000"),
     #Type I
-    "addi": ("001000", "", "", "", "", ""),
-    "beq": ("000100", "", "", "", "", ""),
+    "addi": ("001001", "", "", "", "", ""),
+    "beq": ("010100", "", "", "", "", ""),
     "sw": ("101011", "", "", "", "", ""),
     "lw": ("100011", "", "", "", "", ""),
     #Type J
-    "j": ("000010", "", "", "", "", "")
+    "j": ("000010", "", "", "", "", ""),
+    #type JAL
+    "jal": ("000011", "", "", "", "", ""),
+    #type JR
+    "jRr": ("000011", "", "", "", "", ""),
 }
 
 
@@ -40,15 +44,20 @@ for linea in arch:
             codigo += instrucciones[instruction][0]
             number = int(campos[1][1:])  # Extract the numeric part of the instruction, excluding the '#'
             codigo += bin(number)[2:].zfill(26)  # Convert the number to binary and pad it to 26 bits
+            
+        if instruction == "jal":
+            codigo += instrucciones[instruction][0]
+            number = int(campos[1][1:])  # Extract the numeric part of the instruction, excluding the '#'
+            codigo += bin(number)[2:].zfill(26)  # Convert the number to binary and pad it to 26 bits
 
         codigo += instrucciones[instruction][2]
         codigo += instrucciones[instruction][3]
         codigo += instrucciones[instruction][4]
         codigo += instrucciones[instruction][5]
-
-
-    out.write(codigo + '\n')
-
+        
+        # Slice the output in 8 bit long lines and append the rest in new lines
+        for i in range(0, len(codigo), 8):
+            out.write(codigo[i:i+8] + '\n')
 
 # Cerrar los archivos de entrada y salida
 arch.close()
