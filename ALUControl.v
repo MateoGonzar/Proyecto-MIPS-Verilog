@@ -19,6 +19,12 @@ begin
                 default: ALUSel <= 0;
             endcase
         end
+	3'b000: begin //ADD
+            ALUSel <= 4'b0010; //Add
+        end
+	3'b010: begin //SUB
+            ALUSel <= 4'b0110; //Substract
+        end
         default: ALUSel <= 0;
     endcase
 end

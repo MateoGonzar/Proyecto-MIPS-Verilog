@@ -15,7 +15,7 @@ module UC (
 
 always @(Op) begin
     case(Op)
-        6'd0: begin
+        6'd0: begin //TIPO R
 	    RegDst <= 1'b1;
 	    AluSrc <= 1'b0;
             MemtoReg <= 1'b0;
@@ -26,7 +26,7 @@ always @(Op) begin
 	    Branch <= 1'b0;
 	    J <= 1'b0;
         end
-	6'b100011: begin
+	6'b100011: begin //lw
             RegDst <= 1'b0;
 	    AluSrc <= 1'b1;
             MemtoReg <= 1'b1;
@@ -37,10 +37,8 @@ always @(Op) begin
 	    Branch <= 1'b0;
 	    J <= 1'b0;
 	end
-	6'b101011: begin
-            RegDst <= 1'b0;
+	6'b101011: begin //SW
 	    AluSrc <= 1'b1;
-            MemtoReg <= 1'b0;
             MemRead <= 1'b0;
             MemWrite <= 1'b1;
             ALUop <= 3'b000;
@@ -48,17 +46,34 @@ always @(Op) begin
 	    Branch <= 1'b0;
 	    J <= 1'b0;
 	end
-	6'b000100: begin
-            RegDst <= 1'b0;
+	6'b000100: begin //BEQ
 	    AluSrc <= 1'b0;
-            MemtoReg <= 1'b0;
             MemRead <= 1'b0;
             MemWrite <= 1'b0;
-            ALUop <= 3'b001;
+            ALUop <= 3'b010;
             RegWrite <= 1'b0;
 	    Branch <= 1'b1;
 	    J <= 1'b0;
-	end //ADDI->001000 y Jump->000010
+	end
+	6'b001000: begin //ADDI
+            RegDst <= 1'b0;
+	    AluSrc <= 1'b1;
+            MemtoReg <= 1'b0;
+            MemRead <= 1'b0;
+            MemWrite <= 1'b0;
+            ALUop <= 3'b000;
+            RegWrite <= 1'b1;
+	    Branch <= 1'b0;
+	    J <= 1'b0;
+	end
+	6'b000010: begin //JUMP
+	    AluSrc <= 1'b0;
+            MemRead <= 1'b0;
+            MemWrite <= 1'b0;
+            RegWrite <= 1'b0;
+	    Branch <= 1'b0;
+	    J <= 1'b1;
+	end
         default: begin
                 MemRead <= 1'b0;
                 MemWrite <= 1'b0;
