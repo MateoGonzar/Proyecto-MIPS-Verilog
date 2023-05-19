@@ -10,11 +10,11 @@
     output reg [31:0]DR2
  );
     
-reg [31:0]Bank[0:10];
+reg [31:0]Bank[0:31];
 
-//initial begin
-//    $readmemb("mem.txt.txt",Bank);
-//end
+initial begin
+    $readmemb("br.txt",Bank);
+end
 
 always @(*) begin
     if(RegEn)

@@ -6,9 +6,12 @@ module MemInst(
 
 reg [7:0]instruction_memory[0:255];
 
-always @(*) begin
-    assign inst = {instruction_memory[pc], instruction_memory[pc+1], instruction_memory[pc+2], instruction_memory[pc+3]};
+initial begin
+    $readmemb("instmem.txt", instruction_memory);
 end
+
+
+assign inst = {instruction_memory[pc], instruction_memory[pc+1], instruction_memory[pc+2], instruction_memory[pc+3]};
 
 
 

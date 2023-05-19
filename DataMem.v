@@ -5,15 +5,16 @@ module DataMem (
   input MemRead,
   output reg [31:0] DataOut
 );
-
 reg [31:0] DataMemory [0:255];
+
+
 always @(*) begin
     if (MemWrite) begin
-        Memory[Add] <= DataIn;
+        DataMemory[Add] <= DataIn;
     end
 
     if (MemRead) begin
-        DataOut <= Memory[Address];
+        DataOut <= DataMemory[Add];
     end
 end
 
