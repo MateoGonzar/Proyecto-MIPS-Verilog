@@ -2,17 +2,15 @@
 module mux5b (
     input [4:0] a,
     input [4:0] b,
-    input [1:0] sel,
-    output reg [4:0] R,
+    input sel,
+    output reg [4:0] R
 );
 
 always @(*) begin
     case(sel)
-        b'00: begin R = a;
-        end
-
-        b'01: begin R = b;
-        end
+        1'b0: R <= a;
+        1'b1: R <= b;
+        default: R <= 0;
     endcase
 end
 endmodule

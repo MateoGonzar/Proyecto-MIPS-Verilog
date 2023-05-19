@@ -10,7 +10,7 @@
     output reg [31:0]DR2
  );
     
-reg [31:0]Bank[0:31];
+reg [31:0]Bank[0:255];
 
 initial begin
     $readmemb("br.txt",Bank);
