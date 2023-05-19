@@ -2,13 +2,11 @@
 
 module Sum(
     input[31:0] pc,
+    input[31:0] inc,
     output reg [31:0]pcsum
 );
 
-reg [31:0] inc = 32'd4;
 
-always @(*) begin
-    assign suma=pc+inc;
-end
+assign pcsum=pc+inc;
 
 endmodule
