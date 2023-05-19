@@ -31,12 +31,13 @@ for linea in arch:
             codigo += bin(int(campos[2][1:].replace("$", "")))[2:].zfill(5)  # rt
             codigo += bin(int(campos[1][1:].replace("$", "")))[2:].zfill(5)  # rs
         
-        if instruction == "addi" or instruction == "beq" or instruction == "lw" or instruction == "sw":
+        if instruction == "addi" or instruction == "beq" or instruction == "sw" or instruction == "lw":
             codigo += instrucciones[instruction][0]
             codigo += bin(int(campos[2][1:].replace("$", "")))[2:].zfill(5)  # rt
             codigo += bin(int(campos[1][1:].replace("$", "")))[2:].zfill(5)  # rs
             codigo += bin(int(campos[3].replace("#", "")))[2:].rjust(16, "0")  # inmediato
-        if instruction == "j":
+     
+        if instruction == "j" :
             codigo += instrucciones[instruction][0]
             number = int(campos[1][1:])  # Extract the numeric part of the instruction, excluding the '#'
             codigo += bin(number)[2:].zfill(26)  # Convert the number to binary and pad it to 26 bits
@@ -54,6 +55,7 @@ for linea in arch:
         # Slice the output in 8 bit long lines and append the rest in new lines
         for i in range(0, len(codigo), 8):
             out.write(codigo[i:i+8] + '\n')
+        #out.write(codigo + '\n')
 
 # Cerrar los archivos de entrada y salida
 arch.close()
